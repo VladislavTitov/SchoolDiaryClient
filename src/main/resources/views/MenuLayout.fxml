@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.vladislav.controller.MenuLayoutController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Файл">
+            <items>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+              <MenuItem mnemonicParsing="false" onAction="#exit" text="Выход" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Редактирование">
+               <items>
+                  <Menu mnemonicParsing="false" text="Новый...">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#addNewSubject" text="Предмет" />
+                        <MenuItem mnemonicParsing="false" onAction="#addNewClass" text="Класс" />
+                        <MenuItem mnemonicParsing="false" onAction="#addNewStudent" text="Ученик" />
+                        <MenuItem mnemonicParsing="false" onAction="#addNewLesson" text="Урок" />
+                    </items>
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </Menu>
+               </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Синхронизация">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#refresh" text="Обновить" />
+                  <MenuItem mnemonicParsing="false" onAction="#save" text="Сохранить" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>
