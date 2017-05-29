@@ -49,4 +49,8 @@ public interface RESTService {
     @POST("/users/{userId}/lessons/{lessonId}/scores")
     Observable<Response<ScoreDto>> postNewScore(@Header("Auth-Token") String token, @Path("userId") Long userId,
                                                  @Path("lessonId") Long lessonId, @Body ScoreDto scoreDto);
+
+    @PUT("users/{userId}/lessons/{lessonId}/scores/{scoreId}")
+    Observable<Response<Object>> updateScore(@Header("Auth-Token") String token, @Path("userId") Long userId,
+                                             @Path("lessonId") Long lessonId, @Path("scoreId") Long scoreId, @Body ScoreDto scoreDto);
 }

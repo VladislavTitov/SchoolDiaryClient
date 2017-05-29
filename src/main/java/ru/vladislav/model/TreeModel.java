@@ -24,12 +24,23 @@ public class TreeModel {
 
             SubjectDto subjectDto = getSubjectDtoById(subjectId, subjects);
             ClassDto classDto = getClassDtoById(classId, classes);
-            if (subjectDto.isEmpty() || classDto.isEmpty()) continue;
+            if (subjectDto.isEmpty() || classDto.isEmpty() /*||
+                    treeContainsModel(treeModels, subjectDto, classDto)*/) continue;
             TreeModel treeModel = new TreeModel(classDto, subjectDto);
             treeModels.add(treeModel);
 
         }
         return new ArrayList<>(treeModels);
+    }
+
+    private static boolean treeContainsModel(Set<TreeModel> set, SubjectDto subjectDto, ClassDto classDto){
+        for (TreeModel treeModel : set) {
+            if (treeModel.getClassDto().getName().equals(classDto.getName()) &&
+                    treeModel.getSubjectDto().getName().equals(subjectDto.getName())){
+                return true;
+            }
+        }
+        return false;
     }
 
     private static ClassDto getClassDtoById(Long id, List<ClassDto> classes){

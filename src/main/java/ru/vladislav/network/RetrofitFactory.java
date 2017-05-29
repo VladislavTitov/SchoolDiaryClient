@@ -25,13 +25,13 @@ public class RetrofitFactory {
                 .registerTypeAdapter(LocalDate.class, new JsonDeserializer<LocalDate>() {
                     @Override
                     public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                        return Instant.ofEpochSecond(json.getAsLong()).atZone(ZoneId.systemDefault()).toLocalDate();
+                        return Instant.ofEpochMilli(json.getAsLong()).atZone(ZoneId.systemDefault()).toLocalDate();
                     }
                 })
                 .registerTypeAdapter(LocalDate.class, new JsonSerializer<LocalDate>() {
                     @Override
                     public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
-                        long date = src.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+                        long date = src.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
                         return new JsonPrimitive(date);
                     }
                 })

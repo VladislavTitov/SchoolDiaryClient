@@ -8,9 +8,17 @@ import java.util.List;
 
 public class SendingDataHolder {
 
+    public static class DataForUpdatingHolder{
+        @Getter
+        private static List<ScoreDto> updatingScores = new ArrayList<>();
 
-    public class DataForUpdatingHolder{
-
+        public static void addIfNotExist(ScoreDto oldScoreDto, ScoreDto newScoreDto){
+            updatingScores.remove(oldScoreDto);
+            updatingScores.add(newScoreDto);
+        }
+        public static void mock(){
+            int i = 0;
+        }
     }
 
     public static class DataForCreatingHolder{

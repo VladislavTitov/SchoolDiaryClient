@@ -118,9 +118,17 @@ public class DataRequester {
                 }, throwable -> {}, controller::initTree);
     }
 
-    public  void addAllNewScores(String token, Long userId, List<ScoreDto> newScores){
+    public void addAllNewScores(String token, Long userId, List<ScoreDto> newScores){
         newScores.forEach(scoreDto -> {
             RetrofitFactory.getInstance().getService().postNewScore(token, userId, scoreDto.getLessonId(), scoreDto)
+                    .observeOn(JavaFxScheduler.platform())
+                    .subscribe();
+        });
+    }
+
+    public void updateScores(String token, Long userId, List<ScoreDto> updatingScores){
+        updatingScores.forEach(scoreDto -> {
+            RetrofitFactory.getInstance().getService().updateScore(token, userId, scoreDto.getLessonId(), scoreDto.getId(), scoreDto)
                     .observeOn(JavaFxScheduler.platform())
                     .subscribe();
         });

@@ -20,9 +20,7 @@ import ru.vladislav.storage.SendingDataHolder;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 
 public class MenuLayoutController {
@@ -254,6 +252,16 @@ public class MenuLayoutController {
         dataRequester.addAllNewScores(DataProvider.getInstance().getUserInfoHolder().getToken(),
                 DataProvider.getInstance().getUserInfoHolder().getUserId(),
                 SendingDataHolder.DataForCreatingHolder.getNewScores());
+
+        dataRequester.updateScores(DataProvider.getInstance().getUserInfoHolder().getToken(),
+                DataProvider.getInstance().getUserInfoHolder().getUserId(),
+                SendingDataHolder.DataForUpdatingHolder.getUpdatingScores());
+    }
+
+    @FXML
+    private void changeUser(){
+        DataProvider.getInstance().dropAll();
+        SignUpController.signUpInit(application);
     }
 
     @FXML

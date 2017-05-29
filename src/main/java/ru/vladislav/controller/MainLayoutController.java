@@ -22,6 +22,7 @@ import ru.vladislav.storage.SendingDataHolder;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MainLayoutController {
@@ -64,7 +65,7 @@ public class MainLayoutController {
         studentNameColumn.setMinWidth(200);
         studentNameColumn.setCellValueFactory(param -> {
             TableModel model = param.getValue();
-            return new SimpleObjectProperty<>(model.getStudent().getLastName());
+            return new SimpleObjectProperty<>(model.getStudent().getLastName() + " " + model.getStudent().getFirstName());
         });
         tableView.getColumns().add(studentNameColumn);
 
@@ -73,7 +74,7 @@ public class MainLayoutController {
                 .sorted(Comparator.comparing(LessonDto::getDate))
                 .forEachOrdered(lessonDto -> {
                     TableColumn<TableModel, String> column = new TableColumn<>(lessonDto.getDate().getDayOfMonth() + " " +
-                            lessonDto.getDate().getMonth().name());
+                            lessonDto.getDate().getMonth().name() + "\n" + lessonDto.getName());
                     column.setCellValueFactory(param -> {
                         TableModel model = param.getValue();
                         int score = model.getDateScoreMap().get(lessonDto).getScore();
@@ -105,6 +106,15 @@ public class MainLayoutController {
                                 SendingDataHolder.DataForCreatingHolder.addIfNotExist(new ScoreDto(null, oldScore, lesson.getId(), studentDto.getId()),
                                         score);
                                 SendingDataHolder.DataForCreatingHolder.mock();
+                            }else {
+                                StudentDto studentDto = event.getRowValue().getStudent();
+                                ScoreDto score = new ScoreDto(scoreDto.getId(), newScore,
+                                        lesson.getId(), studentDto.getId());
+                                DataProvider.getInstance().getScoresHolder().getDtosList().stream()
+                                        .filter(scoreDto1 -> scoreDto1.getId().equals(scoreDto.getId()))
+                                        .findFirst().ifPresent(scoreDto1 -> scoreDto1.setScore(newScore));
+                                SendingDataHolder.DataForUpdatingHolder.addIfNotExist(scoreDto, score);
+                                SendingDataHolder.DataForUpdatingHolder.mock();
                             }
                         }catch (NumberFormatException ex){
                             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -127,7 +137,12 @@ public class MainLayoutController {
             boolean found = false;
             for (TreeItem<String> subjectNode : rootNode.getChildren()){
                 if (subjectNode.getValue().contentEquals(treeModel.getSubjectDto().getName())){
-                    subjectNode.getChildren().add(classNode);
+                    Optional<TreeItem<String>> duplicate = subjectNode.getChildren().stream()
+                            .filter(stringTreeItem -> stringTreeItem.getValue().equals(treeModel.getClassDto().getName()))
+                            .findFirst();
+                    if (!duplicate.isPresent()) {
+                        subjectNode.getChildren().add(classNode);
+                    }
                     found = true;
                     break;
                 }
